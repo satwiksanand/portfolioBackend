@@ -31,4 +31,34 @@ public class ProjectServiceImpl implements ProjectService {
         List<Projects> allProjects = projectRepository.findAll();
         return allProjects.stream().map(ProjectMapper::toDto).collect(Collectors.toList());
     }
+
+    @Override
+    public ProjectDto submitProject(ProjectDto projectDto) {
+        Projects newProject = ProjectMapper.toEntity(projectDto);
+        return ProjectMapper.toDto(projectRepository.save(newProject));
+    }
+
+    @Override
+    public void deleteProject(String id) throws Exception {
+        if(projectRepository.existsById(id)){
+            projectRepository.deleteById(id);
+        }
+        else{
+            throw new Exception("project does not exist!");
+        }
+    }
+
+    @Override
+    public ProjectDto editProject(ProjectDto projectDto) throws Exception {
+        Projects projects = projectRepository.findById(projectDto.getId()).orElseThrow(
+                ()->new Exception("project does not exist")
+        );
+        projects.setName(projectDto.getName());
+        projects.setDescription(projectDto.getDescription());
+        projects.setGithubUrl(projectDto.getGithubUrl());
+        projects.setLiveUrl(projectDto.getLiveUrl());
+        projects.setImageUrl(projectDto.getImageUrl());
+        projects.setTechnologyUsed(projectDto.getTechnologyUsed());
+        return ProjectMapper.toDto(projectRepository.save(projects));
+    }
 }

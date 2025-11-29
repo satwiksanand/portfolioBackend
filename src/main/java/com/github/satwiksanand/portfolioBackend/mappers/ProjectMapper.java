@@ -15,4 +15,15 @@ public class ProjectMapper {
                 .imageUrl(projects.getImageUrl())
                 .build();
     }
+
+    public static Projects toEntity(ProjectDto projectDto){
+        return Projects.builder()
+                .liveUrl(projectDto.getLiveUrl())
+                .name(projectDto.getName())
+                .description(projectDto.getDescription())
+                .technologyUsed(projectDto.getTechnologyUsed())
+                .githubUrl(projectDto.getGithubUrl())
+                .imageUrl(projectDto.getImageUrl())
+                .build();
+    }
 }
